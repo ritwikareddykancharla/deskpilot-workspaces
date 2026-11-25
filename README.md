@@ -1,5 +1,9 @@
 # DeskPilot — Governed Agentic Workspace Runtime, POSIX Remediator & Bedrock Co-Pilot
 
+- **Live CloudFront Studio**: https://d3gk5qze5xyz7y.cloudfront.net
+- **Live `/api/health` Endpoint**: https://d3gk5qze5xyz7y.cloudfront.net/api/health
+- **GitHub Repository**: https://github.com/ritwikareddykancharla/deskpilot-workspaces
+
 DeskPilot is a zero-dependency Python 3.12 control plane for shared human-AI developer workspaces, deployed serverlessly on **Amazon CloudFront + Private S3 (OAC) + AWS Lambda (`python3.12`) + SQLite WAL + Amazon Bedrock (`us.amazon.nova-lite-v1:0`)**.
 
 ![DeskPilot System Architecture](docs/architecture.svg)
