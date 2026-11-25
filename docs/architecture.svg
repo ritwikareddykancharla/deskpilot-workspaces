@@ -1,0 +1,188 @@
+<svg id="deskpilotArchSvg" class="excalidraw-svg" viewBox="0 0 1220 730" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DeskPilot System Architecture Diagram">
+          <defs><style>.ex-hand{font-family:'Caveat',cursive,sans-serif;} .ex-mono{font-family:'Martian Mono',monospace;}</style>
+            <pattern id="exDotGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1" fill="#D4D4D8" />
+            </pattern>
+          </defs>
+
+          <rect x="0" y="0" width="1220" height="730" fill="#FFFFFF" />
+          <rect x="0" y="0" width="1220" height="730" fill="url(#exDotGrid)" opacity="0.68" />
+
+          <!-- ============================================================= -->
+          <!-- PLANE 1: AWS SERVERLESS EDGE DELIVERY                         -->
+          <!-- ============================================================= -->
+          <path d="M 22,18 Q 610,14 1196,19 Q 1201,92 1195,164 Q 608,168 24,163 Q 19,90 22,18 Z" fill="#FAFAFA" stroke="#71717A" stroke-width="1.6" stroke-dasharray="8 6" />
+          <text x="36" y="41" class="ex-hand" font-size="21" font-weight="700" fill="#BE185D">① AWS Serverless Edge Plane (CloudFront + Private S3 OAC + Python 3.12 Lambda · 0 EC2 / 0 RDS)</text>
+
+          <!-- Node 1: User Browser -->
+          <g class="ex-node selected" data-arch-node="edge-browser" tabindex="0">
+            <path d="M 38,55 Q 136,52 234,56 Q 238,96 233,138 Q 135,141 39,137 Q 35,95 38,55 Z" fill="#DBEAFE" />
+            <path class="ex-stroke-main" d="M 38,55 Q 136,52 234,56 Q 238,96 233,138 Q 135,141 39,137 Q 35,95 38,55 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 41,58 Q 137,55 231,59 Q 234,97 230,135 Q 134,138 42,134 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="136" y="83" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#18181B">Developer Browser</text>
+            <text x="136" y="105" text-anchor="middle" class="ex-mono" font-size="10" font-weight="600" fill="#1E3A8A">4 Live Studios + Co-Sign</text>
+            <text x="136" y="123" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#3F3F46">location.hash · Stateless</text>
+          </g>
+
+          <path d="M 237,96 Q 268,92 298,96" fill="none" stroke="#18181B" stroke-width="2.1" stroke-dasharray="6 4" />
+          <path d="M 289,90 L 300,96 L 289,102" fill="none" stroke="#18181B" stroke-width="2.1" />
+          <text x="268" y="86" text-anchor="middle" class="ex-hand" font-size="16" font-weight="700" fill="#18181B">HTTPS</text>
+
+          <!-- Node 2: CloudFront -->
+          <g class="ex-node" data-arch-node="edge-cloudfront" tabindex="0">
+            <path d="M 304,55 Q 430,51 556,56 Q 560,96 555,138 Q 428,142 305,137 Q 301,95 304,55 Z" fill="#FCE7F3" />
+            <path class="ex-stroke-main" d="M 304,55 Q 430,51 556,56 Q 560,96 555,138 Q 428,142 305,137 Q 301,95 304,55 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 307,58 Q 431,54 553,58 Q 556,97 552,135 Q 429,139 308,134 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="430" y="83" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#18181B">Amazon CloudFront CDN</text>
+            <text x="430" y="105" text-anchor="middle" class="ex-mono" font-size="10" font-weight="600" fill="#9D174D">TLS 1.3 · SigV4 OAC Edge</text>
+            <text x="430" y="123" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#3F3F46">/* -&gt; S3 · /api/* -&gt; Lambda</text>
+          </g>
+
+          <path d="M 559,78 Q 596,66 634,66" fill="none" stroke="#18181B" stroke-width="2" stroke-dasharray="6 4" />
+          <path d="M 625,60 L 636,66 L 625,72" fill="none" stroke="#18181B" stroke-width="2" />
+          <text x="596" y="59" text-anchor="middle" class="ex-hand" font-size="15" font-weight="700" fill="#065F46">OAC GET</text>
+
+          <path d="M 559,114 Q 596,126 634,126" fill="none" stroke="#18181B" stroke-width="2" stroke-dasharray="6 4" />
+          <path d="M 625,120 L 636,126 L 625,132" fill="none" stroke="#18181B" stroke-width="2" />
+          <text x="596" y="143" text-anchor="middle" class="ex-hand" font-size="15" font-weight="700" fill="#BE185D">/api/*</text>
+
+          <!-- Node 3: Private S3 -->
+          <g class="ex-node" data-arch-node="edge-s3" tabindex="0">
+            <path d="M 640,39 Q 775,36 910,40 Q 913,65 909,90 Q 774,93 641,89 Q 637,64 640,39 Z" fill="#DCFCE7" />
+            <path class="ex-stroke-main" d="M 640,39 Q 775,36 910,40 Q 913,65 909,90 Q 774,93 641,89 Q 637,64 640,39 Z" fill="none" stroke="#18181B" stroke-width="2" />
+            <path d="M 643,42 Q 776,39 907,42 Q 909,65 906,87 Q 773,90 644,86 Z" fill="none" stroke="#18181B" stroke-width="1" opacity="0.6" />
+            <text x="775" y="61" text-anchor="middle" class="ex-hand" font-size="20" font-weight="700" fill="#18181B">Private S3 Bucket (OAC)</text>
+            <text x="775" y="79" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#065F46">web/index.html · BlockPublicAccess</text>
+          </g>
+
+          <!-- Node 4: Lambda /api/* -->
+          <g class="ex-node" data-arch-node="edge-lambda" tabindex="0">
+            <path d="M 640,100 Q 775,97 910,101 Q 913,127 909,153 Q 774,156 641,152 Q 637,126 640,100 Z" fill="#FFE8D6" />
+            <path class="ex-stroke-main" d="M 640,100 Q 775,97 910,101 Q 913,127 909,153 Q 774,156 641,152 Q 637,126 640,100 Z" fill="none" stroke="#18181B" stroke-width="2" />
+            <path d="M 643,103 Q 776,100 907,103 Q 909,127 906,150 Q 773,153 644,149 Z" fill="none" stroke="#18181B" stroke-width="1" opacity="0.6" />
+            <text x="775" y="123" text-anchor="middle" class="ex-hand" font-size="20" font-weight="700" fill="#18181B">AWS Lambda (Python 3.12)</text>
+            <text x="775" y="142" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#9A3412">deskpilot/server.py · Function URL</text>
+          </g>
+
+          <!-- Tilted Sticky Note -->
+          <g transform="rotate(-1.6 1055 95)">
+            <path d="M 936,40 L 1178,40 L 1178,134 L 1160,150 L 936,150 Z" fill="#FEF3C7" stroke="#18181B" stroke-width="2" />
+            <path d="M 1160,150 L 1160,134 L 1178,134" fill="#FDE68A" stroke="#18181B" stroke-width="1.6" />
+            <text x="950" y="66" class="ex-hand" font-size="19" font-weight="700" fill="#92400E">📌 Note: Zero Standing Infra</text>
+            <text x="950" y="89" class="ex-hand" font-size="17" font-weight="600" fill="#18181B">• Static S3 + CloudFront OAC</text>
+            <text x="950" y="110" class="ex-hand" font-size="17" font-weight="600" fill="#18181B">• Confined /tmp POSIX sandboxes</text>
+            <text x="950" y="131" class="ex-hand" font-size="17" font-weight="700" fill="#BE185D">• 0.18 ms p50 pre-exec gate</text>
+          </g>
+
+          <path d="M 775,154 Q 770,176 612,194" fill="none" stroke="#18181B" stroke-width="2.1" stroke-dasharray="7 5" />
+          <path d="M 621,188 L 610,195 L 622,200" fill="none" stroke="#18181B" stroke-width="2.1" />
+          <text x="760" y="183" class="ex-hand" font-size="16" font-weight="700" fill="#18181B">Pre-Execution Policy Check</text>
+
+          <!-- ============================================================= -->
+          <!-- PLANE 2: 4-TIER DETERMINISTIC COMMAND & DLP GATE              -->
+          <!-- ============================================================= -->
+          <path d="M 22,196 Q 610,192 1196,197 Q 1200,268 1195,338 Q 608,342 24,337 Q 19,266 22,196 Z" fill="#FFF1F2" stroke="#BE185D" stroke-width="1.6" stroke-dasharray="8 6" />
+          <text x="36" y="219" class="ex-hand" font-size="21" font-weight="700" fill="#BE185D">② 4-Tier Command Policy &amp; Zero-Egress DLP Boundary — evaluate_command_policy() (p50: 0.18 ms · 12/12 Exfil Blocked)</text>
+
+          <!-- Gate 1: Secret & Network Hard-Block -->
+          <g class="ex-node" data-arch-node="gate-dlp" tabindex="0">
+            <path d="M 42,233 Q 218,229 394,234 Q 398,279 393,324 Q 216,328 43,323 Q 39,278 42,233 Z" fill="#FEE2E2" />
+            <path class="ex-stroke-main" d="M 42,233 Q 218,229 394,234 Q 398,279 393,324 Q 216,328 43,323 Q 39,278 42,233 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 45,236 Q 219,233 391,237 Q 394,280 390,321 Q 217,325 46,320 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="218" y="261" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#991B1B">Secret, Clipboard &amp; Net Block</text>
+            <text x="218" y="283" text-anchor="middle" class="ex-mono" font-size="9.8" font-weight="700" fill="#18181B">WS-DLP-SECRET-01 · WS-DLP-NET-02</text>
+            <text x="218" y="303" text-anchor="middle" class="ex-mono" font-size="9.3" fill="#7F1D1D">Blocks .env, .key, pbcopy, xclip, curl, nc</text>
+          </g>
+
+          <!-- Gate 2: Shell & Path Confinement -->
+          <g class="ex-node" data-arch-node="gate-confinement" tabindex="0">
+            <path d="M 432,233 Q 610,229 788,234 Q 792,279 787,324 Q 609,328 433,323 Q 429,278 432,233 Z" fill="#DBEAFE" />
+            <path class="ex-stroke-main" d="M 432,233 Q 610,229 788,234 Q 792,279 787,324 Q 609,328 433,323 Q 429,278 432,233 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 435,236 Q 611,233 785,237 Q 788,280 784,321 Q 608,325 436,320 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="610" y="261" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#18181B">shlex + Path Confinement</text>
+            <text x="610" y="283" text-anchor="middle" class="ex-mono" font-size="9.8" font-weight="600" fill="#1E3A8A">Path.resolve().is_relative_to(ws_root)</text>
+            <text x="610" y="303" text-anchor="middle" class="ex-mono" font-size="9.3" fill="#3F3F46">Rejects ; &amp;&amp; | $() ../ &amp; python3 -c</text>
+          </g>
+
+          <!-- Gate 3: Human Co-Sign Mutation Gate -->
+          <g class="ex-node" data-arch-node="gate-cosign" tabindex="0">
+            <path d="M 824,233 Q 1001,229 1178,234 Q 1182,279 1177,324 Q 1000,328 825,323 Q 821,278 824,233 Z" fill="#FEF3C7" />
+            <path class="ex-stroke-main" d="M 824,233 Q 1001,229 1178,234 Q 1182,279 1177,324 Q 1000,328 825,323 Q 821,278 824,233 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 827,236 Q 1002,233 1175,237 Q 1178,280 1174,321 Q 999,325 828,320 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="1001" y="261" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#92400E">Human Co-Sign Mutation Gate</text>
+            <text x="1001" y="283" text-anchor="middle" class="ex-mono" font-size="9.8" font-weight="700" fill="#18181B">WS-MUTATION-COSIGN-09</text>
+            <text x="1001" y="303" text-anchor="middle" class="ex-mono" font-size="9.3" fill="#78350F">Holds cp / mv / mkdir until user approves</text>
+          </g>
+
+          <!-- Arrows from Plane 2 -> Plane 3 -->
+          <path d="M 410,326 Q 360,355 315,380" fill="none" stroke="#18181B" stroke-width="2" stroke-dasharray="6 4" />
+          <path d="M 323,371 L 313,381 L 326,382" fill="none" stroke="#18181B" stroke-width="2" />
+          <text x="270" y="362" class="ex-hand" font-size="16" font-weight="700" fill="#065F46">Cleared argv (shell=False)</text>
+
+          <path d="M 860,326 Q 885,355 905,380" fill="none" stroke="#18181B" stroke-width="2" stroke-dasharray="6 4" />
+          <path d="M 896,377 L 907,381 L 905,369" fill="none" stroke="#18181B" stroke-width="2" />
+          <text x="920" y="362" class="ex-hand" font-size="16" font-weight="700" fill="#1D4ED8">OS Health &amp; Repair</text>
+
+          <!-- ============================================================= -->
+          <!-- PLANE 3: ISOLATED /tmp WORKSPACE & SELF-HEALING ENGINE        -->
+          <!-- ============================================================= -->
+          <path d="M 22,380 Q 610,376 1196,381 Q 1200,452 1195,522 Q 608,526 24,521 Q 19,450 22,380 Z" fill="#F0FDF4" stroke="#065F46" stroke-width="1.6" stroke-dasharray="8 6" />
+          <text x="36" y="404" class="ex-hand" font-size="21" font-weight="700" fill="#065F46">③ Isolated POSIX /tmp Workspace Runtime &amp; Automated Health Remediator (Real Syscalls · Scrubbed Env · 4.0s Timeout)</text>
+
+          <!-- Sandbox Node -->
+          <g class="ex-node" data-arch-node="runtime-sandbox" tabindex="0">
+            <path d="M 42,418 Q 312,414 582,419 Q 586,464 581,508 Q 310,512 43,507 Q 39,462 42,418 Z" fill="#DCFCE7" />
+            <path class="ex-stroke-main" d="M 42,418 Q 312,414 582,419 Q 586,464 581,508 Q 310,512 43,507 Q 39,462 42,418 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 45,421 Q 313,418 579,422 Q 582,464 578,505 Q 311,509 46,504 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="312" y="446" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#18181B">PosixWorkspaceSandbox (/tmp/deskpilot-runtime)</text>
+            <text x="312" y="468" text-anchor="middle" class="ex-mono" font-size="9.8" font-weight="700" fill="#065F46">ws-dev-python · ws-data-etl · ws-ops-broker</text>
+            <text x="312" y="489" text-anchor="middle" class="ex-mono" font-size="9.3" fill="#3F3F46">Subprocess p50: 8.42 ms · Stages notes in proposals/</text>
+          </g>
+
+          <!-- Remediator Node -->
+          <g class="ex-node" data-arch-node="runtime-remediator" tabindex="0">
+            <path d="M 624,418 Q 901,414 1178,419 Q 1182,464 1177,508 Q 900,512 625,507 Q 621,462 624,418 Z" fill="#DBEAFE" />
+            <path class="ex-stroke-main" d="M 624,418 Q 901,414 1178,419 Q 1182,464 1177,508 Q 900,512 625,507 Q 621,462 624,418 Z" fill="none" stroke="#18181B" stroke-width="2.1" />
+            <path d="M 627,421 Q 902,418 1175,422 Q 1178,464 1174,505 Q 899,509 628,504 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="901" y="446" text-anchor="middle" class="ex-hand" font-size="22" font-weight="700" fill="#18181B">4-Mode POSIX Health Remediator</text>
+            <text x="901" y="468" text-anchor="middle" class="ex-mono" font-size="9.8" font-weight="700" fill="#1E3A8A">gzip log rotate · os.kill(pid,0) · chmod 0600 · os.replace</text>
+            <text x="901" y="489" text-anchor="middle" class="ex-mono" font-size="9.3" fill="#3F3F46">16/16 Verified (p50: 39.77 ms) · 2,094,720 B Freed</text>
+          </g>
+
+          <!-- Arrows from Plane 3 -> Plane 4 -->
+          <path d="M 312,510 Q 312,542 312,568" fill="none" stroke="#6D28D9" stroke-width="2.1" stroke-dasharray="6 4" />
+          <path d="M 306,560 L 312,570 L 318,560" fill="none" stroke="#6D28D9" stroke-width="2.1" />
+          <text x="326" y="548" class="ex-hand" font-size="16" font-weight="700" fill="#6D28D9">Task Plan &amp; SRE Brief</text>
+
+          <path d="M 901,510 Q 901,542 901,568" fill="none" stroke="#065F46" stroke-width="2.1" stroke-dasharray="6 4" />
+          <path d="M 895,560 L 901,570 L 907,560" fill="none" stroke="#065F46" stroke-width="2.1" />
+          <text x="915" y="548" class="ex-hand" font-size="16" font-weight="700" fill="#065F46">Append Hash-Chained Event</text>
+
+          <!-- ============================================================= -->
+          <!-- PLANE 4: BEDROCK NOVA CO-PILOT & SQLITE WORM AUDIT LEDGER     -->
+          <!-- ============================================================= -->
+          <g class="ex-node" data-arch-node="bedrock-copilot" tabindex="0">
+            <path d="M 42,574 Q 312,569 582,575 Q 586,642 581,708 Q 310,713 43,707 Q 39,640 42,574 Z" fill="#F3E8FF" />
+            <path class="ex-stroke-main" d="M 42,574 Q 312,569 582,575 Q 586,642 581,708 Q 310,713 43,707 Q 39,640 42,574 Z" fill="none" stroke="#18181B" stroke-width="2.2" />
+            <path d="M 45,577 Q 313,573 579,578 Q 582,642 578,705 Q 311,709 46,704 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="312" y="604" text-anchor="middle" class="ex-hand" font-size="23" font-weight="700" fill="#5B21B6">④ Amazon Bedrock Nova Co-Pilot</text>
+            <text x="312" y="629" text-anchor="middle" class="ex-mono" font-size="10" font-weight="700" fill="#18181B">us.amazon.nova-lite-v1:0 (Converse API)</text>
+            <text x="312" y="651" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#4C1D95">Plans POSIX inspection tasks &amp; synthesizes SRE briefs</text>
+            <rect x="92" y="666" width="440" height="28" fill="#FFFFFF" stroke="#18181B" stroke-width="1.6" />
+            <text x="312" y="684" text-anchor="middle" class="ex-mono" font-size="9.6" font-weight="700" fill="#BE185D">⚡ 14/14 Tasks Passed · p50: 776.5 ms · 387.5 Mean Tok</text>
+          </g>
+
+          <path d="M 585,642 L 620,642" fill="none" stroke="#18181B" stroke-width="2" stroke-dasharray="5 4" />
+          <path d="M 613,636 L 622,642 L 613,648" fill="none" stroke="#18181B" stroke-width="2" />
+
+          <g class="ex-node" data-arch-node="sqlite-worm" tabindex="0">
+            <path d="M 624,574 Q 901,569 1178,575 Q 1182,642 1177,708 Q 900,713 625,707 Q 621,640 624,574 Z" fill="#FEF3C7" />
+            <path class="ex-stroke-main" d="M 624,574 Q 901,569 1178,575 Q 1182,642 1177,708 Q 900,713 625,707 Q 621,640 624,574 Z" fill="none" stroke="#18181B" stroke-width="2.2" />
+            <path d="M 627,577 Q 902,573 1175,578 Q 1178,642 1174,705 Q 899,709 628,704 Z" fill="none" stroke="#18181B" stroke-width="1.1" opacity="0.65" />
+            <text x="901" y="604" text-anchor="middle" class="ex-hand" font-size="23" font-weight="700" fill="#92400E">④ SQLite WAL SHA-256 WORM Ledger</text>
+            <text x="901" y="629" text-anchor="middle" class="ex-mono" font-size="10" font-weight="700" fill="#18181B">deskpilot/audit_ledger.py · deskpilot_audit.db</text>
+            <text x="901" y="651" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#78350F">SHA-256(canonical_json + prev_hash) tamper detection</text>
+            <rect x="681" y="666" width="440" height="28" fill="#DCFCE7" stroke="#18181B" stroke-width="1.6" />
+            <text x="901" y="684" text-anchor="middle" class="ex-mono" font-size="9.6" font-weight="700" fill="#065F46">✓ 76 Chained Rows Verified in 1.427 ms</text>
+          </g>
+        </svg>

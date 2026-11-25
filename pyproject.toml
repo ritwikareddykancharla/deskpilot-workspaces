@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deskpilot-workspaces"
+version = "1.0.0"
+description = "DeskPilot — Agentic Cloud WorkSpaces, Low-Latency DCV/WebRTC Stream Control, Proactive VDI Healer & Side-by-Side Human+AI Desktop Co-Pilot"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Ritwika Reddy Kancharla" }]
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["deskpilot*"]
