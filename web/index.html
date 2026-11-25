@@ -943,7 +943,7 @@
       <div class="overview-callout">
         <h3>Overview</h3>
         <p>
-          DeskPilot sits between Amazon Bedrock and the operating system inside a shared developer workspace. Every proposed command passes through a Python policy check in <code>0.18 ms</code> (<code>p50</code>) before any process starts. Read-only checks such as <code>ls</code> and unit tests run automatically inside an isolated workspace directory (<code>subprocess.run(..., shell=False)</code> with scrubbed environment variables). File changes wait for 1-click approval, and commands that read <code>.env</code> secrets, copy to the clipboard, or open network connections are blocked. DeskPilot also repairs four common local workspace issues (bloated debug logs, stale process lockfiles, expired session tokens, and broken JSON configs) and appends every event to a hash-linked SQLite WAL log.
+          DeskPilot sits between Amazon Bedrock and the operating system inside a shared developer workspace. Every proposed command passes through a deterministic policy check in <code>0.18 ms</code> (<code>p50</code>) before any process starts. Read-only checks such as <code>ls</code> and unit tests run automatically inside an isolated workspace directory (<code>subprocess.run(..., shell=False)</code> with scrubbed environment variables). File changes wait for 1-click approval, and commands that read <code>.env</code> secrets, copy to the clipboard, or open network connections are blocked. DeskPilot also repairs four common local workspace issues (bloated debug logs, stale process lockfiles, expired session tokens, and broken JSON configs) and appends every event to a hash-linked SQLite WAL log.
         </p>
       </div>
 
@@ -1008,7 +1008,7 @@
           <span class="section-kicker">02 · Architecture</span>
           <h2 class="section-title">Architecture</h2>
           <p class="section-desc">
-            Static assets are served by Amazon CloudFront from a private S3 bucket, and <code>/api/*</code> requests route to Python 3.12 on AWS Lambda. Click any component in the diagram to inspect its Python module, boundary rules, and measured latency.
+            Static assets are served by Amazon CloudFront from a private S3 bucket, and <code>/api/*</code> requests route to AWS Lambda. Click any component in the diagram to inspect its source module, boundary rules, and measured latency.
           </p>
         </div>
       </div>
@@ -1041,7 +1041,7 @@
           <!-- LAYER 1: BROWSER & SERVERLESS AWS EDGE                        -->
           <!-- ============================================================= -->
           <path d="M 22,18 Q 610,14 1196,19 Q 1201,92 1195,164 Q 608,168 24,163 Q 19,90 22,18 Z" fill="#FAFAFA" stroke="#71717A" stroke-width="1.6" stroke-dasharray="8 6" />
-          <text x="36" y="41" class="svg-title" font-size="21" font-weight="700" fill="#BE185D">① Browser &amp; Serverless AWS Edge (CloudFront + Private S3 + Python 3.12 Lambda)</text>
+          <text x="36" y="41" class="svg-title" font-size="21" font-weight="700" fill="#BE185D">① Browser &amp; Serverless AWS Edge (CloudFront + Private S3 + AWS Lambda)</text>
 
           <!-- Node 1: Engineer's Browser -->
           <g class="arch-node selected" data-arch-node="edge-browser" tabindex="0">
@@ -1089,7 +1089,7 @@
             <path d="M 640,100 Q 775,97 910,101 Q 913,127 909,153 Q 774,156 641,152 Q 637,126 640,100 Z" fill="#FFE8D6" />
             <path class="arch-stroke-main" d="M 640,100 Q 775,97 910,101 Q 913,127 909,153 Q 774,156 641,152 Q 637,126 640,100 Z" fill="none" stroke="#18181B" stroke-width="2" />
             <path d="M 643,103 Q 776,100 907,103 Q 909,127 906,150 Q 773,153 644,149 Z" fill="none" stroke="#18181B" stroke-width="1" opacity="0.6" />
-            <text x="775" y="123" text-anchor="middle" class="svg-title" font-size="20" font-weight="700" fill="#18181B">AWS Lambda API (Python 3.12)</text>
+            <text x="775" y="123" text-anchor="middle" class="svg-title" font-size="20" font-weight="700" fill="#18181B">AWS Lambda API</text>
             <text x="775" y="142" text-anchor="middle" class="svg-mono" font-size="9.4" fill="#9A3412">deskpilot/server.py · On-Demand</text>
           </g>
 
@@ -1245,7 +1245,7 @@
           <span class="section-kicker">03 · Implementation</span>
           <h2 class="section-title">Implementation</h2>
           <p class="section-desc">
-            DeskPilot uses standard-library Python 3.12 with zero third-party runtime packages. Four modules handle command checking and process isolation, workspace repair, hash-chained SQLite logging, and Bedrock API integration.
+            DeskPilot separates command verification, process isolation, automated workspace repair, and audit logging into four backend modules covering command checking and process isolation, workspace repair, hash-chained SQLite logging, and Bedrock API integration.
           </p>
         </div>
         <span class="tag tag-pass">10 / 10 Unit Tests Passing</span>
@@ -1359,10 +1359,10 @@
         </div>
 
         <div class="card">
-          <span class="step-badge">04 · PYTHON RULES VS MODEL FILTERING</span>
-          <h3 style="font-size:1.08rem; font-weight:800; margin:0.45rem 0;">Sub-Millisecond Python Checks Before Execution</h3>
+          <span class="step-badge">04 · DETERMINISTIC RULES VS MODEL FILTERING</span>
+          <h3 style="font-size:1.08rem; font-weight:800; margin:0.45rem 0;">Sub-Millisecond Policy Checks Before Execution</h3>
           <p style="font-size:0.92rem; color:var(--ink-muted); line-height:1.68;">
-            Asking an LLM whether a shell command is safe adds hundreds of milliseconds of latency and remains vulnerable to prompt injection. DeskPilot checks commands in deterministic Python in <code>0.18 ms</code> (<code>p50</code>) and uses Amazon Bedrock (<code>776.5 ms</code> <code>p50</code>) only for task planning and post-repair incident summaries.
+            Asking an LLM whether a shell command is safe adds hundreds of milliseconds of latency and remains vulnerable to prompt injection. DeskPilot evaluates command rules deterministically in <code>0.18 ms</code> (<code>p50</code>) and uses Amazon Bedrock (<code>776.5 ms</code> <code>p50</code>) only for task planning and post-repair incident summaries.
           </p>
         </div>
       </div>
@@ -1655,7 +1655,7 @@
       <div class="overview-callout" style="margin-bottom:1.35rem;">
         <h3>Measured Results (<code>benchmarks/latest_results.json</code>)</h3>
         <p>
-          Local command checks and workspace repairs run in standard-library Python without network calls. Command policy checks finish in <code>0.18 ms</code> median (<code>0.339 ms</code> <code>p95</code>), isolated process execution finishes in <code>8.418 ms</code> median (<code>70.258 ms</code> <code>p95</code>), workspace health checks take <code>1.635 ms</code> median, full automatic self-repair finishes in <code>39.772 ms</code> median (<code>42.771 ms</code> <code>p95</code>, freeing <code>2,094,720</code> bytes across <code>16 / 16</code> verified runs), and hash-chain verification across <code>76</code> SQLite WAL rows finishes in <code>1.427 ms</code>. Live Amazon Bedrock (<code>us.amazon.nova-lite-v1:0</code>) planning and incident summaries averaged <code>776.5 ms</code> median (<code>1,107.5 ms</code> <code>p95</code>, <code>387.5</code> mean tokens across <code>26</code> calls, <code>10,076</code> total tokens).
+          Local command checks and workspace repairs execute in-process without external network calls. Command policy checks finish in <code>0.18 ms</code> median (<code>0.339 ms</code> <code>p95</code>), isolated process execution finishes in <code>8.418 ms</code> median (<code>70.258 ms</code> <code>p95</code>), workspace health checks take <code>1.635 ms</code> median, full automatic self-repair finishes in <code>39.772 ms</code> median (<code>42.771 ms</code> <code>p95</code>, freeing <code>2,094,720</code> bytes across <code>16 / 16</code> verified runs), and hash-chain verification across <code>76</code> SQLite WAL rows finishes in <code>1.427 ms</code>. Live Amazon Bedrock (<code>us.amazon.nova-lite-v1:0</code>) planning and incident summaries averaged <code>776.5 ms</code> median (<code>1,107.5 ms</code> <code>p95</code>, <code>387.5</code> mean tokens across <code>26</code> calls, <code>10,076</code> total tokens).
         </p>
       </div>
 
@@ -1844,10 +1844,10 @@
         },
         "edge-lambda": {
           plane: "Layer ① · Browser & Serverless Edge",
-          title: "AWS Lambda Python 3.12 API",
+          title: "AWS Lambda API",
           module: "deskpilot/server.py :: lambda_handler & route_api_request",
           summary: "Handles /api/health, /api/state, workspace fault injection and self-repair, side-by-side AI collaboration, and direct command execution on demand without standing servers.",
-          metric: "Python 3.12 Serverless · 512 MB Memory"
+          metric: "AWS Lambda Serverless · 512 MB Memory"
         },
         "gate-dlp": {
           plane: "Layer ② · Command Safety Check",
@@ -1914,7 +1914,7 @@
       };
 
       const DEFAULT_WORKSPACES = [
-        { workspace_id: "ws-dev-python", title: "Python Backend Service", profile: "Python 3.12 API & Unit Tests", owner: "maya.patel@enterprise.io", sandbox_path: "/tmp/deskpilot-runtime/workspaces/ws-dev-python", status: "HEALTHY", file_count: 8, disk_usage_bytes: 2340, active_log_bytes: 138, key_mode_octal: "0600", session_ttl_sec: 28800, mcp_config_valid: true, issues: [] },
+        { workspace_id: "ws-dev-python", title: "Python Backend Service", profile: "Backend API & Unit Tests", owner: "maya.patel@enterprise.io", sandbox_path: "/tmp/deskpilot-runtime/workspaces/ws-dev-python", status: "HEALTHY", file_count: 8, disk_usage_bytes: 2340, active_log_bytes: 138, key_mode_octal: "0600", session_ttl_sec: 28800, mcp_config_valid: true, issues: [] },
         { workspace_id: "ws-data-etl", title: "Analytics & Data Pipeline", profile: "Batch Jobs, Logs & Tool Configs", owner: "jordan.lee@enterprise.io", sandbox_path: "/tmp/deskpilot-runtime/workspaces/ws-data-etl", status: "HEALTHY", file_count: 8, disk_usage_bytes: 2348, active_log_bytes: 136, key_mode_octal: "0600", session_ttl_sec: 28800, mcp_config_valid: true, issues: [] },
         { workspace_id: "ws-ops-broker", title: "Session & Key Management", profile: "Auth Tokens, Signing Keys & Runbooks", owner: "elena.rossi@enterprise.io", sandbox_path: "/tmp/deskpilot-runtime/workspaces/ws-ops-broker", status: "HEALTHY", file_count: 8, disk_usage_bytes: 2352, active_log_bytes: 137, key_mode_octal: "0600", session_ttl_sec: 28800, mcp_config_valid: true, issues: [] }
       ];

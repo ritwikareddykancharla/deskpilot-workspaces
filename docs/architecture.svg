@@ -12,7 +12,7 @@
           <!-- PLANE 1: AWS SERVERLESS EDGE DELIVERY                         -->
           <!-- ============================================================= -->
           <path d="M 22,18 Q 610,14 1196,19 Q 1201,92 1195,164 Q 608,168 24,163 Q 19,90 22,18 Z" fill="#FAFAFA" stroke="#71717A" stroke-width="1.6" stroke-dasharray="8 6" />
-          <text x="36" y="41" class="ex-hand" font-size="21" font-weight="700" fill="#BE185D">① AWS Serverless Edge Plane (CloudFront + Private S3 OAC + Python 3.12 Lambda · 0 EC2 / 0 RDS)</text>
+          <text x="36" y="41" class="ex-hand" font-size="21" font-weight="700" fill="#BE185D">① AWS Serverless Edge Plane (CloudFront + Private S3 OAC + AWS Lambda · 0 EC2 / 0 RDS)</text>
 
           <!-- Node 1: User Browser -->
           <g class="ex-node selected" data-arch-node="edge-browser" tabindex="0">
@@ -60,7 +60,7 @@
             <path d="M 640,100 Q 775,97 910,101 Q 913,127 909,153 Q 774,156 641,152 Q 637,126 640,100 Z" fill="#FFE8D6" />
             <path class="ex-stroke-main" d="M 640,100 Q 775,97 910,101 Q 913,127 909,153 Q 774,156 641,152 Q 637,126 640,100 Z" fill="none" stroke="#18181B" stroke-width="2" />
             <path d="M 643,103 Q 776,100 907,103 Q 909,127 906,150 Q 773,153 644,149 Z" fill="none" stroke="#18181B" stroke-width="1" opacity="0.6" />
-            <text x="775" y="123" text-anchor="middle" class="ex-hand" font-size="20" font-weight="700" fill="#18181B">AWS Lambda (Python 3.12)</text>
+            <text x="775" y="123" text-anchor="middle" class="ex-hand" font-size="20" font-weight="700" fill="#18181B">AWS Lambda</text>
             <text x="775" y="142" text-anchor="middle" class="ex-mono" font-size="9.4" fill="#9A3412">deskpilot/server.py · Function URL</text>
           </g>
 
